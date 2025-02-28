@@ -31,6 +31,9 @@ model Company {
   logo      String
   website   String
   xAccount  String?
+
+  JobPost JobPost[]
+
   userId    String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -87,4 +90,30 @@ model VerificationToken {
 enum UserType {
   COMPANY
   JOB_SEEKER
+}
+
+model JobPost {
+  id String @id @default(uuid())
+
+  jobTitle String
+  employmentType String
+  location String
+  salaryFrom Int
+  salaryTo Int
+  jobDescription String
+  listingDuration Int
+  benefits String[]
+
+  status JobPostStatus @default(DRAFT) 
+
+  createdAt DateTime @default(now())
+  updated DateTime @updatedAt
+  Company Company @relation(fields: [companyId], references: [id])
+  companyId String
+}
+
+enum JobPostStatus {
+  DRAFT
+  ACTIVE
+  EXPIRED
 }
